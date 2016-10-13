@@ -26,7 +26,7 @@ During development of Tropo's interactions we decided to, instead of using Tropo
 
 And that is the reason why you'll see I actually bypassed the framework's REST response method and `echo`ed all the objects `json_encoded`.
 
-Also you might note the API isn't really REST. That's because Tropo JS script engine gets even weirder with POST requests and as we were really short on time we decided to stick only with GET requests.
+Also you might note the API isn't really REST. That's because Tropo's JS script engine gets even weirder with POST requests and as we were really short on time we decided to stick only to GET requests.
 
 **TL;DR**
 - Try a simple JSON echo in whatever language you're using if Tropo isn't getting data from your API
