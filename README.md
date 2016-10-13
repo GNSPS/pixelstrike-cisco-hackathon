@@ -2,9 +2,9 @@
 
 A game created @ PixelsCamp '16 for the Cisco Hackathon that implements [Tropo](https://www.tropo.com/), [Meraki CMX APIs](https://meraki.cisco.com/solutions/cmx) and [Cisco Spark APIs](https://developer.ciscospark.com/)
 
-1. [Description](https://github.com/GNSPS/URLSchemer#1-description)
-2. [Pitfalls Encountered](https://github.com/GNSPS/URLSchemer#2-requirements)
-3. [Setup](https://github.com/GNSPS/URLSchemer#3-installation)
+1. [Description](https://github.com/GNSPS/pixelstrike-cisco-hackathon#1-description)
+2. [Pitfalls Encountered](https://github.com/GNSPS/pixelstrike-cisco-hackathon#2-pitfalls-encountered)
+3. [Setup](https://github.com/GNSPS/pixelstrike-cisco-hackathon#3-setup)
 
 ## 1. Description
 
