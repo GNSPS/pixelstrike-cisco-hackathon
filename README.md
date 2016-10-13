@@ -2,6 +2,8 @@
 
 A game created @ PixelsCamp '16 for the Cisco Hackathon that implements [Tropo](https://www.tropo.com/), [Meraki CMX APIs](https://meraki.cisco.com/solutions/cmx) and [Cisco Spark APIs](https://developer.ciscospark.com/)
 
+Please refer to [my Medium article](https://medium.com/@GNSPS/pixels-camp-cisco-hackathon-and-why-we-won-it-17030a093f9d) for further information about the competition.
+
 1. [Description](https://github.com/GNSPS/pixelstrike-cisco-hackathon#1-description)
 2. [Pitfalls Encountered](https://github.com/GNSPS/pixelstrike-cisco-hackathon#2-pitfalls-encountered)
 3. [Setup](https://github.com/GNSPS/pixelstrike-cisco-hackathon#3-setup)
