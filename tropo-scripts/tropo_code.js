@@ -1,3 +1,6 @@
+// Authors @lostrapt & @GNSPS
+
+
 // QUICK START GUIDE
 //
 // 1. Clone this gists and make it private
@@ -393,24 +396,26 @@ function post(url, options) {
 
 }
 
+// code above this line is a copy of cisco's example code in our hackathon and has a couple of useful functions (https://github.com/ObjectIsAdvantag/pixelscamp2006/blob/master/tropo-IVR.js)
+
 // --------------- Starts here -------------------
 
+// GET info on the player
+// returns json
 function initiateGame() {
     var url = "https://pixelstrike-gnsps.rhcloud.com/api/player?callerid="+currentCall.callerID;
-    debug("url: "+url);
     var response = requestJSONviaGET(url);
-    debug(response);
     if (response) {
         return response;
     }
     return [];
 }
 
-// post 
+// Asks player for Access pin code and character choice 
 function assign_character(){
     var choice;
     var pin;
-    var message = "";
+    var message = "";   // for SMS report
     say("Hello and welcome to PixelStrike!");
     
     ask("Would you like to be a terrorist or a cop?", {
@@ -434,39 +439,32 @@ function assign_character(){
         }
     });
     
-    wait(500);
+    wait(500);  // give listener some hearing room
     
     say("Oh, I almost forgot, do you have the pin number we gave you, need to make sure it's you!");
     ask("Please insert your 4 digit pin now", {
         choices:"[4 DIGITS]",
         interdigitTimeout: 5,
         timeout: 20.0,
-        mode: 'dtmf',
+        mode: 'dtmf',   // only accept touch inpuy
         attempts: 10,
         bargein: true,
         onBadChoice: function(event) {
             say("Try again!");
         },
         onChoice: function(event) {
-            //post event.value
             // params: 4 digit pin and callerID and Terrorist?
             
             var url = "https://pixelstrike-gnsps.rhcloud.com/api/player/activate?callerid="+currentCall.callerID+"&code="+event.value+"&t_ct="+choice;
-            debug("url: "+url);
-            var response = requestJSONviaGET(url);
-            debug(response);
+
+            var response = requestJSONviaGET(url);  // Posts were not working so had to use GET 
             
-//            post("https://pixelstrike-gnsps.rhcloud.com/api/player/activate", {body : "Hello, Central!", contentType: "application/json", query: {
-//                "callerid": currentCall.callerID,
-//                "code": event.value,
-//                "t_ct": choice
-//            }});
-            
-            debug(currentCall.callerID+" has just joined forces with the "+message+"s! with code "+event.value);
+            debug(currentCall.callerID+" has just joined forces with the "+message+"s! with code "+event.value); // logging to spark
             
             say("Good, I'll be going now, call me again when you are ready.");
             hangup();
             
+            // Send report back by SMS
             call(currentCall.callerID, {network:"SMS"});
             say("Welcome to the "+message+"'s team!");
         }
@@ -494,22 +492,17 @@ function plant_bomb(bombs_availble, killed, action){
                     hangup();
                 }else{
                     if(event.value == "1"){
-                        // do stuff -> post planted bomb
-                        // do bomb has been planted sound
-                        // tell score
                         
                         var url = "https://pixelstrike-gnsps.rhcloud.com/api/bomb?callerid="+currentCall.callerID;
-                        debug("url: "+url);
                         var response = requestJSONviaGET(url);
-                        debug(response);
                         
-//                        post("https://pixelstrike-gnsps.rhcloud.com/api/bomb", {body : "Hello, Central!", contentType: 'application/json', query: {
-//                            "callerid": currentCall.callerID
-//                        }});
+                        // POST was not working so GET was used
+                        // post("https://pixelstrike-gnsps.rhcloud.com/api/bomb", {body : "Hello, Central!", contentType: 'application/json', query: {
+                        //      "callerid": currentCall.callerID
+                        // }});
                         
                         say("http://pixelstrike-gnsps.rhcloud.com/audio/bomb_planted.mp3");
                         hangup();
-                        // todo: send sms report
                     }
                 }
             }
@@ -519,12 +512,13 @@ function plant_bomb(bombs_availble, killed, action){
         hangup();
     }
     
+    // send SMS report
     call(currentCall.callerID, {network:"SMS"});
     say("Lifes taken: "+killed+" \nBomb explosions: "+action);
 }
 
 function get_info_on_bomb(bombs, saved, action){
-    // get  -> get distance to bombs
+    // get -> get distance to bombs (info comed from initiateGame() )
     // tell # of bombsand  distance of 2 nearest bombs
     // if distance < 5m ask for defuse
     // if answer is yes post defuse
@@ -533,6 +527,7 @@ function get_info_on_bomb(bombs, saved, action){
     wait(100);
     
     if(bombs.length == 0){
+        // no bombs placed
         say("Seems like the terrorists are keeping it low key. We have no intel on bombs right now. Try later.");
         hangup();
     }else{
@@ -543,7 +538,7 @@ function get_info_on_bomb(bombs, saved, action){
                 choices: "[1 DIGITS]",
                 interdigitTimeout: 5,
                 timeout: 20.0,
-                mode: 'dtmf',
+                mode: 'dtmf',   // touch input
                 attempts: 10,
                 bargein: true,
                 onBadChoice: function(event) {
@@ -556,18 +551,17 @@ function get_info_on_bomb(bombs, saved, action){
                     }else{
                         if(event.value == "1"){
 
-
                             var url = "https://pixelstrike-gnsps.rhcloud.com/api/bomb/defuse?callerid="+currentCall.callerID+"&bomb_id="+bombs[0].id;
-                            debug("url: "+url);
                             var response = requestJSONviaGET(url);
-    //                        post("https://pixelstrike-gnsps.rhcloud.com/api/bomb/defuse", {body : "Hello, Central!", contentType: 'application/json', query: {
-    //                            "bomb_id": bombs_availble[0].id,
-    //                            "callerid": currentCall.callerID
-    //                        }});
+                            
+                            // POST was not working so GET was used
+                            // post("https://pixelstrike-gnsps.rhcloud.com/api/bomb/defuse", {body : "Hello, Central!", contentType: 'application/json', query: {
+                            //     "bomb_id": bombs_availble[0].id,
+                            //     "callerid": currentCall.callerID
+                            // }});
 
                             say("https://pixelstrike-gnsps.rhcloud.com/audio/bomb_defused.mp3");
                             hangup();
-                            // todo: send sms with report
                         }
                     }
                 }
@@ -578,10 +572,12 @@ function get_info_on_bomb(bombs, saved, action){
         }
     }
     
+    // send SMS report
     call(currentCall.callerID, {network:"SMS"});
     say("Lives saved: "+saved+"\nBombs defused:"+action);
 }
 
+// See if there is any info on the caller already
 result = initiateGame();
 
 if(result.error == 2){
@@ -591,7 +587,6 @@ if(result.error == 2){
         say("It appears that something went wrong, please try calling later! Goodbye");
         hangup();
     }else{
-        // do stuff
         switch(result.data.player.t_ct){
             // Police
             case "0":
@@ -601,22 +596,11 @@ if(result.error == 2){
             case "1": 
                 plant_bomb(result.data.bombs.available, result.data.player.lives_actioned, result.data.player.bombs_actioned);  //todo
                 break;
-            // not registered yet
             default: 
-                //assign_character();
+                // should never get here unless first request fails
                 say("the rsrs line seems to rsrs breaking up rsrs contact rsrs can.");
-                hangup();
+                hangup();   // hangups call for user
                 break;
         }
     }
 }
-//assign_character();
-
-//debug(currentCall.callerID + " just called!");
-
-// Get - says if person is assigned
-// POST - params: 4 digit pin and callerID and Terrorist/Cop
-// POST - plant bomb on location
-// GET - get distance to bombs
-// POST - difuse bomb #X
-// GET - PIN code
