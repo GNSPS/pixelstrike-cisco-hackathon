@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteCond $1 !^(index\.php|robots\.txt|images|audio|assets|favicon\.ico)
+RewriteRule ^(.*)$ /index.php/$1 [L]
+RewriteRule \.git - [F,L]
