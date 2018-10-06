@@ -14,7 +14,7 @@ This repo is divided in two folders: `php-backend` and `tropo-scripts` with thei
 
 `php-backend` is a [CodeIgniter 3.1](http://www.codeigniter.com)-powered API (with an awesome library from Phil Sturgeon) and should run smoothly in any cloud PaaS out there. We stuck with [Openshift from RedHat](https://openshift.redhat.com/) because I personally like it better than any other.
 
-`tropo-scripts` has one single Javascript file made by @lostrapt that we chose to host on Tropo's hosting service as it was easier and faster to do.
+`tropo-scripts` has one single Javascript file made by @gonfsilva that we chose to host on Tropo's hosting service as it was easier and faster to do.
 
 `pixelstrike-schema.sql` is a MySQL schema dump file which you can run to automatically create a database identical to the one used.
 
